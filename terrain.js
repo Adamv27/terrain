@@ -17,7 +17,7 @@ const setUp = () => {
   noise.seed(Math.random());
 
   const grid = Array.from(Array(rows), () => new Array(columns).fill(0));
-  const SCALE = 0.1;
+  const SCALE = 0.05;
   for (let i = 0; i < rows; i++) {
     for (let j = 0; j < columns; j++) {
       let value = noise.perlin2(i * SCALE, j * SCALE);
@@ -30,7 +30,11 @@ const setUp = () => {
 
 
 const setCtx = value => {
-  if (value >= 0.1) {
+  if (value >= 0.5) {
+    ctx.fillStyle = 'white'
+  } else if (value >= 0.3) {
+    ctx.fillStyle = 'grey'
+  } else if (value >= 0.1) {
     ctx.fillStyle = 'green' 
   } else if (value >= -0.08) {
     ctx.fillStyle = '#C2B280'
