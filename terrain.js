@@ -17,10 +17,16 @@ const setUp = () => {
 
   document.addEventListener('keydown', (e) => {
     if (e.key === 'w') {
-      world.move(0, 1)
+      world.move(0, -1)
       world.render(ctx)
     } else if (e.key === 's') {
-      world.move(0, -1)
+      world.move(0, 1)
+      world.render(ctx)
+    } else if (e.key === 'd') {
+      world.move(1, 0)
+      world.render(ctx)
+    } else if (e.key === 's') {
+      world.move(-1, 0)
       world.render(ctx)
     }
   })

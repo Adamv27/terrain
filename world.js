@@ -43,21 +43,32 @@ class World {
   move(dx, dy) {
     this.y += dy;
     this.x += dx;
-    if (dy > 0) {
+    console.log(this.x);
+    if (dy < 0) {
       this.grid.pop()
       this.grid = [new Array(this.columns).fill(0), ...this.grid]
       this.grid[0].forEach((column, index) => {
         let xVal = (index) * settings.RANDOMNESS
         let yVal = this.y * settings.RANDOMNESS
         this.grid[0][index] = noise.perlin2(xVal, yVal)});
-    } else if (dy < 0) {
-      console.log(`(${this.x},${this.y})`);
+    } else if (dy > 0) {
       this.grid.shift();
       this.grid.push(new Array(this.columns).fill(0))
       this.grid[this.rows - 1].forEach((column, index) => {
         let xVal = (this.x + index) * settings.RANDOMNESS
         let yVal = (this.y + this.rows) * settings.RANDOMNESS
         this.grid[this.rows - 1][index] = noise.perlin2(xVal, yVal)});
+    }
+    if (dx > 0) {
+      this.grid.forEach(row => {
+        row.shift()
+      })
+      console.log(this.grid[0]);
+      this.grid.forEach((row, index) => {
+        let xVal = (this.x + this.columns) * settings.RANDOMNESS
+        let yVal = (this.y + index) * settings.RANDOMNESS
+        this.grid[index][this.columns - 1] = noise.perlin2(xVal, yVal);
+      })
     }
   }
 
