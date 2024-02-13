@@ -2,10 +2,11 @@ const SCALE = parseInt(getComputedStyle(document.documentElement).getPropertyVal
 
 const settings = {}
 settings.TILE_SIZE = parseInt(getComputedStyle(document.documentElement).getPropertyValue("--tile-size"));
-settings.WIDTH = (16 * settings.TILE_SIZE) * (SCALE * 2);
-settings.HEIGHT = (9 * settings.TILE_SIZE) * (SCALE * 2);
+settings.WIDTH = (16 * settings.TILE_SIZE) * (SCALE);
+settings.HEIGHT = (9 * settings.TILE_SIZE) * (SCALE);
 settings.RANDOMNESS = 0.05
-settings.COLORS = {
+
+const colors = {
   sand: ['#F6D7B0'], // ECCCA2 E1BF92
   ocean: {
     shallow: '#7AFFE8',
@@ -18,4 +19,4 @@ settings.COLORS = {
   }
 }
 
-export { settings };
+export { settings, colors };
