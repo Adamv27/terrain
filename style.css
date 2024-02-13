@@ -1,3 +1,8 @@
+:root {
+  --tile-size: 10px;
+  --scale: 7;
+}
+
 body {
   margin: 0;
   background-color: grey;
@@ -8,4 +13,11 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+#camera {
+  width: calc(16 * var(--tile-size) * var(--scale)); 
+  height: calc(9 * var(--tile-size) * var(--scale));
+  border: 5px solid red;
+  overflow: hidden;
 }
