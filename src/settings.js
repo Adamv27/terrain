@@ -12,7 +12,7 @@ const colors = {
     shallow: '#7AFFE8',
     deep: '#7AEEFF'
   },
-  grass: ['#BEEA41'], // A9CE21
+  grass: ['#BEEA41', '#A9CE21'], // A9CE21
   mountain: {
     low: ['#3A3232'], // 2d2c2c
     high: 'white'

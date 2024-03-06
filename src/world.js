@@ -2,27 +2,45 @@ import { settings } from "../src/settings.js";
 import { noise } from "../lib/perlin.js";
 import { getFillColorFromValue } from "../lib/utils.js";
 
-noise.seed(Math.random());
 
 class World {
   constructor(width, height) {
     this.x = 0;
     this.y = 0;
-    
     this.rows = height / settings.TILE_SIZE;
     this.columns = width / settings.TILE_SIZE;
     this.grid = Array.from(Array(this.rows), () => new Array(this.columns).fill(0));
-    this.generateNew();
 
+    this.cache = new Map(); 
+    this.generate();
     this.dragging = false;
     this.dx = 0;
     this.dy = 0;
   }
 
-  generateNew() {
+  seedCache() {
+    for (let i = -500; i < 500; i++) {
+      for (let j = -500; j < 500; j++) {
+        const strFormat = `${j},${i}`
+        const value = noise.perlin2(j * settings.RANDOMNESS, i * settings.RANDOMNESS)
+        this.cache.set(strFormat, value)
+      }
+    }
+  }
+
+  generate() {
     for (let row = 0; row < this.rows; row++) {
       for (let column = 0; column < this.columns; column++) {
-        let value = noise.perlin2(column * settings.RANDOMNESS, row * settings.RANDOMNESS)
+        const xVal = column + this.x
+        const yVal = row + this.y
+        const strFormat = `${xVal},${yVal}`
+        let value;
+        if (this.cache.has(strFormat)) {
+          value = this.cache.get(strFormat)
+        } else {
+          value = noise.perlin2(xVal * settings.RANDOMNESS, yVal * settings.RANDOMNESS)
+          this.cache.set(strFormat, value)
+        }
         this.grid[row][column] = value;
       }
     }
@@ -30,50 +48,9 @@ class World {
   
   update() {
     if (this.dx == 0 && this.dy == 0) return;
-    
-    /*
-    const directionMagnitude = Math.sqrt((this.dx * this.dx) + (this.dy * this.dy))
-    const normalizedDx = this.dx / directionMagnitude
-    const normalizedDy = this.dy / directionMagnitude
-    */
-    
     this.x += this.dx
     this.y += this.dy;
-
-    if (this.dy < 0) {
-      this.grid.pop()
-      this.grid = [new Array(this.columns).fill(0), ...this.grid]
-      this.grid[0].forEach((column, index) => {
-        let xVal = (this.x + index) * settings.RANDOMNESS
-        let yVal = this.y * settings.RANDOMNESS
-        this.grid[0][index] = noise.perlin2(xVal, yVal)});
-    } else if (this.dy > 0) {
-      this.grid.shift();
-      this.grid.push(new Array(this.columns).fill(0))
-      this.grid[this.rows - 1].forEach((column, index) => {
-        let xVal = (this.x + index) * settings.RANDOMNESS
-        let yVal = (this.y + this.rows) * settings.RANDOMNESS
-        this.grid[this.rows - 1][index] = noise.perlin2(xVal, yVal)});
-    }
-    if (this.dx > 0) {
-      this.grid.forEach(row => {
-        row.shift()
-      })
-      this.grid.forEach((row, index) => {
-        let xVal = (this.x + this.columns) * settings.RANDOMNESS
-        let yVal = (this.y + index) * settings.RANDOMNESS
-        this.grid[index][this.columns - 1] = noise.perlin2(xVal, yVal);
-      })
-    } else if (this.dx < 0) {
-      this.grid.forEach(row => {
-        row.pop()
-      })
-      this.grid.forEach((row, index) => {
-        let xVal = this.x * settings.RANDOMNESS
-        let yVal = (this.y + index) * settings.RANDOMNESS
-        this.grid[index] = [noise.perlin2(xVal, yVal), ...row]
-      })
-    }
+    this.generate()
   }
 
   handleEvent(event) {
