@@ -8,14 +8,25 @@
   </head>
   <body>
     <div id="container">
+      <h1 id="header">Infinite Terrain Generation with Perlin Noise</h1>
+      <p>Adam Vinch</p>
       <div id="camera">
         <canvas id="canvas"></canvas>
+      </div>
+      <div id="content">
+        <div>
+          <h2>What is Perlin noise?</h2>
+          <p>Perlin noise is a procedural generation algorithm invented by Ken Perlin. It is a type of gradient noise which creates a lattice of pseudorandom gradients, whose dots products are interpolated to find the values in between the lattices. The result is a pseudorandom numbers that smoothly transition between one another.</p>
+          <canvas id="perlin-example"></canvas>
+          <button id="generate-example">Regenerate</button>
+        </div>
       </div>
     </div>
     <script src="src/settings.js" type="module"></script>
     <script src="src/world.js" type="module"></script>
     <script src="lib/perlin.js" type="module"></script>
     <script src="lib/utils.js" type="module"></script>
+    <script src="src/perlinExample.js" type="module"></script>
     <script src="src/terrain.js" type="module"></script>
   </body>
 </html>

@@ -1,6 +1,6 @@
 :root {
   --tile-size: 10px;
-  --scale: 6;
+  --scale: 5;
 }
 
 body {
@@ -9,8 +9,8 @@ body {
 }
 
 #container {
-  height: 100vh;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
@@ -18,6 +18,12 @@ body {
 #camera {
   width: calc(16 * var(--tile-size) * var(--scale)); 
   height: calc(9 * var(--tile-size) * var(--scale));
-  border: 5px solid red;
-  overflow: hidden;
+}
+
+#header {
+  margin: 0;
+}
+
+#content {
+  width: 100%;
 }
