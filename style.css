@@ -5,7 +5,10 @@
 
 body {
   margin: 0;
-  background-color: grey;
+  background-color: #6E6E6E;
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: large;
 }
 
 #container {
@@ -20,10 +23,50 @@ body {
   height: calc(9 * var(--tile-size) * var(--scale));
 }
 
-#header {
+h1 {
+  margin-bottom: 0;
+}
+
+h2 {
   margin: 0;
 }
 
 #content {
-  width: 100%;
+  margin-top: 1em;
+  width: calc(16 * var(--tile-size) * var(--scale));
 }
+
+
+.text-box {
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#examples {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.example-box {
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+
+.btn {
+  margin: 1em;
+  border: none;
+  background-color: white;
+  border-radius: 4px;
+  padding: 0.3em;
+}
+
+.btn:active {
+  background-color: #C0C0C0;
+}
+
