@@ -16,6 +16,10 @@ const randomCtx = randomCanvas.getContext('2d')
 randomCanvas.width = WIDTH;
 randomCanvas.height = HEIGHT;
 
+const terrainCanvas = document.getElementById('basic-terrain')
+const terrainCtx = terrainCanvas.getContext('2d')
+terrainCanvas.width = WIDTH;
+terrainCanvas.height = HEIGHT;
 
 const generatePerlin = () => {
   noise.seed(Math.random());
@@ -45,9 +49,32 @@ const generateRandom = () => {
 }
 
 
+const getFillColor = value => {
+  if (value >= 0.5) {
+    return '#BEEA41'
+  } else if (value >= 0.4) {
+    return '#F6D7B0'
+  } else {
+    return '#7AEEFF'
+  }
+}
+
+
+const generateTerrain = () => {
+  noise.seed(Math.random()) 
+  for (let i = 0; i < HEIGHT; i += PIXEL_SIZE) {
+    for (let j = 0; j < WIDTH; j += PIXEL_SIZE) {
+      const perlinValue = noise.perlin2(i * settings.RANDOMNESS, j * settings.RANDOMNESS);
+      terrainCtx.fillStyle = getFillColor(mapToRange(perlinValue, -1, 1, 0, 1));
+      terrainCtx.fillRect(j, i, PIXEL_SIZE, PIXEL_SIZE);
+    }
+  }
+}
+
+
 generateRandom();
 generatePerlin();
-
+generateTerrain();
 
 const randomButton = document.getElementById('generate-random-example');
 randomButton.addEventListener('click', () => {
@@ -57,4 +84,9 @@ randomButton.addEventListener('click', () => {
 const perlinButton = document.getElementById('generate-example');
 perlinButton.addEventListener('click', () => {
   generatePerlin();
+})
+
+const terrainButton = document.getElementById('generate-terrain');
+terrainButton.addEventListener('click', () => {
+  generateTerrain();
 })

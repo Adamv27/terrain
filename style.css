@@ -33,7 +33,7 @@ h2 {
 
 #content {
   margin-top: 1em;
-  width: calc(16 * var(--tile-size) * var(--scale));
+  max-width: calc(16 * var(--tile-size) * var(--scale));
 }
 
 
@@ -44,7 +44,7 @@ h2 {
   justify-content: center;
 }
 
-#examples {
+.examples {
   display: flex;
   justify-content: space-evenly;
 }
@@ -68,5 +68,32 @@ h2 {
 
 .btn:active {
   background-color: #C0C0C0;
+}
+
+#color-container {
+  margin: 1em;
+  display: flex;
+  justify-content: center;
+}
+
+.color-box {
+  margin: 0.25em;
+  width: 1.75em;
+  height: 1.75em;
+  border-radius: 50%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+p.color-box {
+  margin: 0.5em;
+}
+
+.test {
+  width: 100px;
+  height: 100px;
+  background-color: red;
 }
 
