@@ -7,15 +7,19 @@ class World {
   constructor(width, height) {
     this.x = 0;
     this.y = 0;
+    this.dx = 0;
+    this.dy = 0;
+
     this.rows = height / settings.TILE_SIZE;
     this.columns = width / settings.TILE_SIZE;
     this.grid = Array.from(Array(this.rows), () => new Array(this.columns).fill(0));
-
-    this.cache = new Map(); 
+    
+    this.cache = new Map();
+    
+    this.seed = Math.random();
     this.generate();
+
     this.dragging = false;
-    this.dx = 0;
-    this.dy = 0;
   }
 
   seedCache() {
@@ -29,6 +33,8 @@ class World {
   }
 
   generate() {
+    noise.seed(this.seed);
+
     for (let row = 0; row < this.rows; row++) {
       for (let column = 0; column < this.columns; column++) {
         const xVal = column + this.x
@@ -86,6 +92,9 @@ class World {
         ctx.fillRect(x, y, settings.TILE_SIZE, settings.TILE_SIZE)
       })
     })
+    ctx.font = "24px serif"
+    ctx.fillStyle = "#FFF"
+    ctx.fillText(`(${this.x}, ${this.y})`, 10, 25)
   }
 }
 
