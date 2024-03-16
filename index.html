@@ -17,7 +17,8 @@
         <div class="text-box">
           <h2>What is Perlin noise?</h2>
           <p>Perlin noise is a procedural generation algorithm invented by Ken Perlin. It is a type of gradient noise which creates a lattice of pseudorandom gradients, whose dots products are interpolated to find the values in between the lattices. The result is a pseudorandom numbers that smoothly transition between one another.</p>
-          <p>In the below examples numbers are generated in the range [0, 1] where numbers closer to 0 appear darker and numbers closer to 1 appear lighter. Notice how with the Perlin noise values, adjacent pixels tend to be similar colors.</p>
+          <p>Perlin noise generates numbers in the range [-1, 1] althought it is important to note that there is a heavy bias toward 0.0 so the extremes of this range are far less likely.</p>
+          <p>In the below examples, numbers closer to -1 appear darker and numbers closer to 1 appear lighter. Notice how with the Perlin noise values, adjacent pixels tend to be similar colors.</p>
         </div>
 
         <div class="examples">
@@ -35,11 +36,11 @@
 
         <div class="text-box">
           <h2>So where did the color come from?</h2>
-          <p>If you look at the Perlin noise example above, what you are actually seeing is a bunch of numbers in between 0 and 1. This can be treated as a heightmap where higher numbers (closer to 1) correspond to a higher elevation and lower numbers (closer to 0) correspond to a lower elevation. To get a "terrain" look we can then assign a threshold for different colors. Low numbers may be drawn as blue to represent sea level while high numbers are drawn as green to represent land.</p>
+          <p>If you look at the Perlin noise example above, what you are actually seeing is a bunch of numbers in between -1 and 1. This can be treated as a heightmap where higher numbers correspond to a higher elevation and lower numbers correspond to a lower elevation. To get a "terrain" look we can then assign a threshold for different colors. Low numbers may be drawn as blue to represent sea level while high numbers are drawn as green to represent land.</p>
           <div id="color-container">
-            <div class="color-box" style="background-color: #7AEEFF;">0.2</div>
-            <div class="color-box" style="background-color: #F6D7B0;">0.4</div>
-            <div class="color-box" style="background-color: #BEEA41;">0.5</div>
+            <div class="color-box" style="background-color: #7AEEFF;">-0.5</div>
+            <div class="color-box" style="background-color: #F6D7B0;">0.1</div>
+            <div class="color-box" style="background-color: #BEEA41;">0.3</div>
           </div>
           <div class="examples">
             <div class="example-box">
