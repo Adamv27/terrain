@@ -1,6 +1,6 @@
 import { settings } from "../src/settings.js";
 import { noise } from "../lib/perlin.js";
-import { getFillColorFromValue } from "../lib/utils.js";
+import { getFillColor } from "../lib/utils.js";
 
 
 class World {
@@ -12,11 +12,13 @@ class World {
 
     this.rows = height / settings.TILE_SIZE;
     this.columns = width / settings.TILE_SIZE;
-    this.grid = Array.from(Array(this.rows), () => new Array(this.columns).fill(0));
-    
-    this.cache = new Map();
-    
-    this.seed = Math.random();
+    this.heightMap = Array.from(Array(this.rows), () => new Array(this.columns).fill(0));
+    this.temperatureMap = Array.from(Array(this.rows), () => new Array(this,this.columns).fill(0));
+    this.percipitationMap = Array.from(Array(this.rows), () => new Array(this,this.columns).fill(0));
+
+    this.heightSeed = Math.random();
+    this.temperatureSeed = Math.random();
+    this.percipitationSeed = Math.random();
     this.generate();
 
     this.dragging = false;
@@ -33,21 +35,19 @@ class World {
   }
 
   generate() {
-    noise.seed(this.seed);
-
     for (let row = 0; row < this.rows; row++) {
       for (let column = 0; column < this.columns; column++) {
         const xVal = column + this.x
         const yVal = row + this.y
-        const strFormat = `${xVal},${yVal}`
-        let value;
-        if (this.cache.has(strFormat)) {
-          value = this.cache.get(strFormat)
-        } else {
-          value = noise.perlin2(xVal * settings.RANDOMNESS, yVal * settings.RANDOMNESS)
-          this.cache.set(strFormat, value)
-        }
-        this.grid[row][column] = value;
+        noise.seed(this.heightSeed);
+        const altitude = noise.perlin2(xVal * settings.RANDOMNESS, yVal * settings.RANDOMNESS)
+        noise.seed(this.temperatureSeed);
+        const temperature = noise.perlin2(xVal * settings.RANDOMNESS, yVal * settings.RANDOMNESS)
+        noise.seed(this.percipitationSeed);
+        const percipitation = noise.perlin2(xVal * settings.RANDOMNESS, yVal * settings.RANDOMNESS)
+        this.heightMap[row][column] = altitude;
+        this.temperatureMap[row][column] = temperature;
+        this.percipitationMap[row][column] = percipitation;
       }
     }
   }
@@ -84,14 +84,15 @@ class World {
   }
 
   render(ctx) {
-    this.grid.forEach((row, rowIndex) => {
-      row.forEach((column, columnIndex) => {
-        ctx.fillStyle = getFillColorFromValue(column)
-        const x = columnIndex * settings.TILE_SIZE
-        const y = rowIndex * settings.TILE_SIZE
-        ctx.fillRect(x, y, settings.TILE_SIZE, settings.TILE_SIZE)
-      })
-    })
+    for (let row = 0; row < this.rows; row++) {
+      for (let column = 0; column < this.columns; column++) {
+        let altitude = this.heightMap[row][column];
+        ctx.fillStyle = getFillColor(altitude, 0, 0);
+        const x = column * settings.TILE_SIZE;
+        const y = row * settings.TILE_SIZE;
+        ctx.fillRect(x, y, settings.TILE_SIZE, settings.TILE_SIZE);
+      }
+    }
     ctx.font = "24px serif"
     ctx.fillStyle = "#FFF"
     ctx.fillText(`(${this.x}, ${this.y})`, 10, 25)
