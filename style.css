@@ -31,6 +31,10 @@ h2 {
   margin: 0;
 }
 
+p {
+  margin: 5px;
+}
+
 #content {
   margin-top: 1em;
   max-width: calc(16 * var(--tile-size) * var(--scale));
