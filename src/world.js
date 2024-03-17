@@ -28,7 +28,7 @@ class World {
     for (let i = -500; i < 500; i++) {
       for (let j = -500; j < 500; j++) {
         const strFormat = `${j},${i}`
-        const value = noise.perlin2(j * settings.FREQUENCY, i * settings.FREQUENCY)
+        const value = noise.simplex2(j * settings.FREQUENCY, i * settings.FREQUENCY)
         this.cache.set(strFormat, value)
       }
     }
@@ -40,13 +40,13 @@ class World {
         const xVal = column + this.x
         const yVal = row + this.y
         noise.seed(this.heightSeed);
-        const altitude = noise.perlin2(xVal * settings.FREQUENCY, yVal * settings.FREQUENCY)
+        const altitude = noise.simplex2(xVal * settings.FREQUENCY, yVal * settings.FREQUENCY)
 
         noise.seed(this.temperatureSeed);
-        const temperature = noise.perlin2(xVal * settings.FREQUENCY, yVal * settings.FREQUENCY)
+        const temperature = noise.simplex2(xVal * settings.FREQUENCY, yVal * settings.FREQUENCY)
 
         noise.seed(this.percipitationSeed);
-        const percipitation = noise.perlin2(xVal * settings.FREQUENCY, yVal * settings.FREQUENCY)
+        const percipitation = noise.simplex2(xVal * settings.FREQUENCY, yVal * settings.FREQUENCY)
 
         this.heightMap[row][column] = altitude;
         this.temperatureMap[row][column] = temperature;
