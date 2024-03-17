@@ -9,6 +9,7 @@ class World {
     this.y = 0;
     this.dx = 0;
     this.dy = 0;
+    this.zoom = settings.FREQUENCY;
 
     this.rows = height / settings.TILE_SIZE;
     this.columns = width / settings.TILE_SIZE;
@@ -40,13 +41,13 @@ class World {
         const xVal = column + this.x
         const yVal = row + this.y
         noise.seed(this.heightSeed);
-        const altitude = noise.simplex2(xVal * settings.FREQUENCY, yVal * settings.FREQUENCY)
+        const altitude = noise.simplex2(xVal * this.zoom, yVal * this.zoom)
 
         noise.seed(this.temperatureSeed);
-        const temperature = noise.simplex2(xVal * settings.FREQUENCY, yVal * settings.FREQUENCY)
+        const temperature = noise.simplex2(xVal * this.zoom, yVal * this.zoom)
 
         noise.seed(this.percipitationSeed);
-        const percipitation = noise.simplex2(xVal * settings.FREQUENCY, yVal * settings.FREQUENCY)
+        const percipitation = noise.simplex2(xVal * this.zoom, yVal * this.zoom)
 
         this.heightMap[row][column] = altitude;
         this.temperatureMap[row][column] = temperature;
@@ -56,7 +57,6 @@ class World {
   }
   
   update() {
-    if (this.dx == 0 && this.dy == 0) return;
     this.x += this.dx
     this.y += this.dy;
     this.generate()
@@ -69,6 +69,8 @@ class World {
         else if (event.key == 's') this.dy = 1;
         else if (event.key == 'a') this.dx = -1;
         else if (event.key == 'd') this.dx = 1;
+        else if (event.key == 'e') this.zoom += 0.01;
+        else if (event.key == 'q' && this.zoom > 0.01) this.zoom -= 0.01;
         break;
       case 'keyup':
         if (event.key == 'w' || event.key == 's') this.dy = 0;
