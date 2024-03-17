@@ -26,7 +26,7 @@ const generatePerlin = () => {
   
   for (let i = 0; i < HEIGHT; i += PIXEL_SIZE) {
     for (let j = 0; j < WIDTH; j += PIXEL_SIZE) {
-      const perlinValue = noise.perlin2(i * settings.RANDOMNESS, j * settings.RANDOMNESS);
+      const perlinValue = noise.perlin2(i * settings.FREQUENCY, j * settings.FREQUENCY);
       const value = mapToRange(perlinValue, -1, 1, 0, 1);
 
       const rgbColor = hsvToRgb(0, 0, value);
@@ -64,7 +64,7 @@ const generateTerrain = () => {
   noise.seed(Math.random()) 
   for (let i = 0; i < HEIGHT; i += PIXEL_SIZE) {
     for (let j = 0; j < WIDTH; j += PIXEL_SIZE) {
-      const perlinValue = noise.perlin2(i * settings.RANDOMNESS, j * settings.RANDOMNESS);
+      const perlinValue = noise.perlin2(i * settings.FREQUENCY, j * settings.FREQUENCY);
       terrainCtx.fillStyle = getFillColor(mapToRange(perlinValue, -1, 1, 0, 1));
       terrainCtx.fillRect(j, i, PIXEL_SIZE, PIXEL_SIZE);
     }

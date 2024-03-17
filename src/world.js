@@ -28,7 +28,7 @@ class World {
     for (let i = -500; i < 500; i++) {
       for (let j = -500; j < 500; j++) {
         const strFormat = `${j},${i}`
-        const value = noise.perlin2(j * settings.RANDOMNESS, i * settings.RANDOMNESS)
+        const value = noise.perlin2(j * settings.FREQUENCY, i * settings.FREQUENCY)
         this.cache.set(strFormat, value)
       }
     }
@@ -40,11 +40,14 @@ class World {
         const xVal = column + this.x
         const yVal = row + this.y
         noise.seed(this.heightSeed);
-        const altitude = noise.perlin2(xVal * settings.RANDOMNESS, yVal * settings.RANDOMNESS)
+        const altitude = noise.perlin2(xVal * settings.FREQUENCY, yVal * settings.FREQUENCY)
+
         noise.seed(this.temperatureSeed);
-        const temperature = noise.perlin2(xVal * settings.RANDOMNESS, yVal * settings.RANDOMNESS)
+        const temperature = noise.perlin2(xVal * settings.FREQUENCY, yVal * settings.FREQUENCY)
+
         noise.seed(this.percipitationSeed);
-        const percipitation = noise.perlin2(xVal * settings.RANDOMNESS, yVal * settings.RANDOMNESS)
+        const percipitation = noise.perlin2(xVal * settings.FREQUENCY, yVal * settings.FREQUENCY)
+
         this.heightMap[row][column] = altitude;
         this.temperatureMap[row][column] = temperature;
         this.percipitationMap[row][column] = percipitation;
@@ -87,10 +90,14 @@ class World {
     for (let row = 0; row < this.rows; row++) {
       for (let column = 0; column < this.columns; column++) {
         let altitude = this.heightMap[row][column];
-        ctx.fillStyle = getFillColor(altitude, 0, 0);
+        let temperature = this.temperatureMap[row][column];
+        let percipitation = this.percipitationMap[row][column];
+
+        ctx.fillStyle = getFillColor(altitude, temperature, percipitation);
         const x = column * settings.TILE_SIZE;
         const y = row * settings.TILE_SIZE;
         ctx.fillRect(x, y, settings.TILE_SIZE, settings.TILE_SIZE);
+        ctx.fillStyle = '#FFF'
       }
     }
     ctx.font = "24px serif"
