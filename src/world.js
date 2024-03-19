@@ -14,11 +14,12 @@ class World {
     this.rows = height / settings.TILE_SIZE;
     this.columns = width / settings.TILE_SIZE;
     this.heightMap = Array.from(Array(this.rows), () => new Array(this.columns).fill(0));
-    this.temperatureMap = Array.from(Array(this.rows), () => new Array(this,this.columns).fill(0));
     this.percipitationMap = Array.from(Array(this.rows), () => new Array(this,this.columns).fill(0));
 
     this.heightSeed = Math.random();
     this.percipitationSeed = Math.random();
+    
+    this.cache = new Map();
 
     this.generate();
 
@@ -40,15 +41,25 @@ class World {
       for (let column = 0; column < this.columns; column++) {
         const xVal = column + this.x
         const yVal = row + this.y
+        let altitude;
+        let percipitation;
 
-        let frequency = settings.ALTITUDE_FREQ 
-        noise.seed(this.heightSeed);
-        const altitude = noise.simplex2(xVal * frequency, yVal * frequency)
+        const cacheKey = `${xVal},${yVal}`
+        const cacheValue = this.cache.get(cacheKey);
+        if (cacheValue) {
+          [altitude, percipitation] = cacheValue;
+        } else {
+          let frequency = settings.ALTITUDE_FREQ 
+          noise.seed(this.heightSeed);
+          const altitude = noise.simplex2(xVal * frequency, yVal * frequency)
+           
+          frequency = settings.PERCIPITATION_FREQ
+          noise.seed(this.percipitationSeed);
+          const percipitation = noise.simplex2(xVal * frequency, yVal * frequency)
+          
+          this.cache.set(cacheKey, [altitude, percipitation])
+        }
         
-        frequency = settings.PERCIPITATION_FREQ
-        noise.seed(this.percipitationSeed);
-        const percipitation = noise.simplex2(xVal * frequency, yVal * frequency)
-
         this.heightMap[row][column] = altitude;
         this.percipitationMap[row][column] = percipitation;
       }
