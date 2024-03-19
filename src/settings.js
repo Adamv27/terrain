@@ -5,11 +5,13 @@ settings.TILE_SIZE = parseInt(getComputedStyle(document.documentElement).getProp
 settings.WIDTH = (16 * settings.TILE_SIZE) * (SCALE);
 settings.HEIGHT = (9 * settings.TILE_SIZE) * (SCALE);
 settings.FREQUENCY = 0.05
+settings.ALTITUDE_FREQ = 0.02
+settings.PERCIPITATION_FREQ = 0.02
+settings.TILE_SIZE = 5
 
 
 const terrain = { 
-  maxSandHeight: -0.12, 
-  maxOceanHeight: -0.2,
+  sand: 0, 
   oceanShallow: -0.15,
   oceanDeep: -0.3,
 }
@@ -31,8 +33,8 @@ const colors = {
   },
   sand: ['#F6D7B0'], // ECCCA2 E1BF92
   mountain: {
-    low: ['#3A3232'], // 2d2c2c
-    high: 'white'
+    low: '#3A3232', // 2d2c2c
+    high: '#2d2c2c' 
   }
 }
 

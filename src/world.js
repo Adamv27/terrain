@@ -9,7 +9,7 @@ class World {
     this.y = 0;
     this.dx = 0;
     this.dy = 0;
-    this.zoom = settings.FREQUENCY;
+    this.zoom = 0
 
     this.rows = height / settings.TILE_SIZE;
     this.columns = width / settings.TILE_SIZE;
@@ -18,8 +18,8 @@ class World {
     this.percipitationMap = Array.from(Array(this.rows), () => new Array(this,this.columns).fill(0));
 
     this.heightSeed = Math.random();
-    this.temperatureSeed = Math.random();
     this.percipitationSeed = Math.random();
+
     this.generate();
 
     this.dragging = false;
@@ -40,17 +40,16 @@ class World {
       for (let column = 0; column < this.columns; column++) {
         const xVal = column + this.x
         const yVal = row + this.y
+
+        let frequency = settings.ALTITUDE_FREQ 
         noise.seed(this.heightSeed);
-        const altitude = noise.simplex2(xVal * this.zoom, yVal * this.zoom)
-
-        noise.seed(this.temperatureSeed);
-        const temperature = noise.simplex2(xVal * this.zoom, yVal * this.zoom)
-
+        const altitude = noise.simplex2(xVal * frequency, yVal * frequency)
+        
+        frequency = settings.PERCIPITATION_FREQ
         noise.seed(this.percipitationSeed);
-        const percipitation = noise.simplex2(xVal * this.zoom, yVal * this.zoom)
+        const percipitation = noise.simplex2(xVal * frequency, yVal * frequency)
 
         this.heightMap[row][column] = altitude;
-        this.temperatureMap[row][column] = temperature;
         this.percipitationMap[row][column] = percipitation;
       }
     }
@@ -92,10 +91,9 @@ class World {
     for (let row = 0; row < this.rows; row++) {
       for (let column = 0; column < this.columns; column++) {
         let altitude = this.heightMap[row][column];
-        let temperature = this.temperatureMap[row][column];
         let percipitation = this.percipitationMap[row][column];
 
-        ctx.fillStyle = getFillColor(altitude, temperature, percipitation);
+        ctx.fillStyle = getFillColor(altitude, percipitation);
         const x = column * settings.TILE_SIZE;
         const y = row * settings.TILE_SIZE;
         ctx.fillRect(x, y, settings.TILE_SIZE, settings.TILE_SIZE);
