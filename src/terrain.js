@@ -5,8 +5,11 @@ import { World } from './world.js'
 class Engine {
   constructor() {
     this.canvas = document.getElementById('canvas');
+    const offset = parseInt(getComputedStyle(document.documentElement).getPropertyValue("--tile-size"));
+    this.canvas.style.transform = `translate3d(${-offset}px, ${-offset}px, 0)`
     this.canvas.width = settings.WIDTH;
     this.canvas.height = settings.HEIGHT;
+
     this.ctx = canvas.getContext('2d')
 
     this.world = new World(settings.WIDTH, settings.HEIGHT);

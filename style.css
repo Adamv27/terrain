@@ -19,8 +19,9 @@ body {
 }
 
 #camera {
-  width: calc(16 * var(--tile-size) * var(--scale)); 
-  height: calc(9 * var(--tile-size) * var(--scale));
+  width: calc(16 * var(--tile-size) * var(--scale) - (2 * var(--tile-size))); 
+  height: calc(9 * var(--tile-size) * var(--scale) - (2 * var(--tile-size)));
+  overflow: hidden;
 }
 
 h1 {

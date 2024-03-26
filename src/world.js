@@ -113,7 +113,7 @@ class World {
     }
     ctx.font = "24px serif"
     ctx.fillStyle = "#FFF"
-    ctx.fillText(`(${this.x}, ${this.y})`, 10, 25)
+    ctx.fillText(`(${this.x}, ${this.y})`, 15, 35)
   }
 }
 
