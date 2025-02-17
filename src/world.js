@@ -13,6 +13,7 @@ class World {
 
     this.rows = height / settings.TILE_SIZE;
     this.columns = width / settings.TILE_SIZE;
+    console.log(this.rows, this.columns);
     this.heightMap = Array.from(Array(this.rows), () => new Array(this.columns).fill(0));
     this.percipitationMap = Array.from(Array(this.rows), () => new Array(this,this.columns).fill(0));
 
@@ -49,13 +50,12 @@ class World {
         if (cacheValue) {
           [altitude, percipitation] = cacheValue;
         } else {
-          let frequency = settings.ALTITUDE_FREQ 
           noise.seed(this.heightSeed);
-          const altitude = noise.simplex2(xVal * frequency, yVal * frequency)
+          const altitude = this.elevation(xVal, yVal);
            
-          frequency = settings.PERCIPITATION_FREQ
+          let frequency = settings.PERCIPITATION_FREQ
           noise.seed(this.percipitationSeed);
-          const percipitation = noise.simplex2(xVal * frequency, yVal * frequency)
+          const percipitation = noise.simplex2(xVal * frequency, yVal * frequency);
           
           this.cache.set(cacheKey, [altitude, percipitation])
         }
@@ -65,6 +65,20 @@ class World {
       }
     }
   }
+
+  elevation(x, y) {
+    let frequency = settings.ALTITUDE_FREQ;
+
+    let e = 1 * noise.simplex2(x * frequency, y * frequency) 
+      + 0.5 * noise.simplex2(2 * frequency * x, 2 * frequency * y) 
+      + 0.25 * noise.simplex2(4 * frequency * x, 4 * frequency * y);
+
+    e = e / (1 + 0.5 + 0.25);
+
+    return e;
+  }
+
+  
   
   update() {
     this.x += this.dx
